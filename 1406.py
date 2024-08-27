@@ -1,15 +1,12 @@
 import sys
 
-# 문장 입력 받기
-stream = sys.stdin.readline()
-
 # 양쪽에 커서 두기
-left_stack = list(stream) # 왼쪽 스택에는 stream을 list 형태로 담기
+left_stack = list(sys.stdin.readline().strip()) # 왼쪽 스택에는 list 형태로 담기
 right_stack = [] # 빈 스택
 
 # 명령어 처리
 for _ in range(int(sys.stdin.readline())):
-    c = sys.stdin.readline().split(' ')
+    c = sys.stdin.readline().strip().split(' ')
     if c[0] == 'L': # 커서를 왼쪽으로 한 칸
         if left_stack:
             right_stack.append(left_stack.pop())
@@ -23,5 +20,5 @@ for _ in range(int(sys.stdin.readline())):
         left_stack.append(c[1])
 
 # 결과 출력 (커서 왼쪽 + 오른쪽 스택의 역순)
-print(''.join(left_stack + right_stack[::-1]))
-        
+left_stack.extend(reversed(right_stack))
+print(''.join(left_stack))
