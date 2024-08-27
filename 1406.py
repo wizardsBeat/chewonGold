@@ -1,9 +1,11 @@
+import sys
+
 # 문장 입력 받기
-stream = list(input())
+stream = list(sys.stdin.readline())
 
 # 최대 글자
-if len(stream) >= 600000:
-    stream = stream[:600000]
+if len(stream) >= 100000:
+    stream = stream[:100000]
 # print(stream)
 
 # 위치를 알려줄 커서
