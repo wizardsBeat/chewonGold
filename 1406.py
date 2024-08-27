@@ -1,36 +1,29 @@
 import sys
+from collections import deque
 
 text = input()
 N = len(text)
 M = int(input())
-command_list = [0] * M
-for i in range (M):
-  command_list[i] = sys.stdin.readline().strip()
 
-cursor = N # 커서 위치
+# 초기 커서 위치 기준 왼쪽에 모든 text가 존재
+left = deque(text)
+right = deque()
 
-def read_command(text, command, cursor, N):
+for _ in range (M):
+  command = sys.stdin.readline().strip()
+
   if command == "L":
-    if cursor != 0: # 커서가 문장의 맨 앞일 때 제외
-      cursor -= 1
+    if left: # 커서가 문장의 맨 앞일 때 제외
+      right.appendleft(left.pop()) # 왼쪽 스택의 오른쪽 끝 엘리먼트를 가져와 오른쪽 스택의 왼쪽 끝에 삽입
   elif command == "D":
-    if cursor != N: # 커서가 문장의 맨 뒤일 때 제외
-      cursor += 1
+    if right: # 커서가 문장의 맨 뒤일 때 제외
+      left.append(right.popleft()) # 오른쪽 스택의 왼쪽 끝 엘리먼트를 가져와 왼쪽 스택의 오른쪽 끝에 삽입
   elif command == "B":
-    if cursor != 0: # 커서가 문장의 맨 앞일 때 제외
-      if cursor == 1:
-        text = text[1:]
-      elif cursor == N:
-        text = text[:N-1]
-      else:
-        text = text[:cursor-1] + text[cursor:]
-      cursor -= 1
-  else:
-    text = text[:cursor] + command[2] + text[cursor:]
-    cursor += 1
-  return text, cursor
+    if left: # 커서가 문장의 맨 앞일 때 제외
+      left.pop() # 왼쪽 스택의 오른쪽 끝 엘리먼트 삭제
+  elif command[0] == "P":
+    left.append(command[2]) # 왼쪽 스택의 오른쪽 끝에 삽입
+  
+  print("left : " + ''.join(left) + ", right : " + ''.join(right))
 
-for command in command_list:
-  text, cursor = read_command(text, command, cursor, len(text))
-
-print(text)
+print(''.join(left) + ''.join(right))
