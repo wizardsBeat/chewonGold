@@ -1,27 +1,27 @@
 import sys
 input = sys.stdin.readline
 
-char = input()
+left = list(input().rstrip()) # 커서 왼쪽 문자들
+right = [] # 커서 오른쪽 문자들 (처음엔 빈 상태)
+
 m = int(input())
-
-commands = []
 for _ in range(m):
-    commands.append(input())
-    
-loc = len(char)
-char_list = list(char)
+    command = input().rstrip()
 
-for command in commands:
+    # 커서 왼쪽 이동
     if command[0] == 'L':
-        if loc > 0: loc -= 1
+        if left:
+            right.append(left.pop()) # 왼쪽 스택에서 오른쪽 스택으로 이동
+    # 커서 오른쪽 이동
     elif command[0] == 'D':
-        if loc < len(char): loc += 1
+        if right:
+            left.append(right.pop()) # 오른쪽 스택에서 왼쪽 스택으로 이동
+    # 커서 왼쪽 문자 삭제
     elif command[0] == 'B':
-        if loc > 0:
-            loc -= 1
-            del char_list[loc]
+        if left:
+            left.pop() # 왼쪽 스택에서 맨 마지막 문자 삭제
+    # 커서 왼쪽 문자 추가
     elif command[0] == 'P':
-        char_list.insert(loc, command.split()[1])
-        loc += 1
-        
-print(*char_list, sep="")
+        left.append(command.split()[1]) # 왼쪽 스택의 맨 마지막에 문자 추가
+
+print(''.join(left + right[::-1])) # 왼쪽 + 오른쪽(역순)
