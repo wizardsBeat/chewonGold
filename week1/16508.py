@@ -1,40 +1,39 @@
-words = input()
+
+# 단어별 빈도수 계산을 위해 사용
+from collections import Counter
+
+def check(string):
+    for t in target:
+        if t in string and string[t] != 0:
+            string[t] -= 1
+        else:
+            return False
+    return True
+
+# 만들고자 하는 단어
+target = input().strip()
+# 책의 수
 N = int(input())
-cost = list()
-title = list()
-for _ in range(N):
-    co, ti = input().split()
-    cost.append(co)
-    title.append(ti)
+prices = []
 
-minimum = 1e9
+for n in range(N):
+    price, title = map(str, input().strip().split())
+    prices.append([int(price), Counter(title)])
 
-for i in range(2 ** N):
-    num = bin(i)[2:].zfill(N)
-    temp_min = 0
-    visited = [0] * len(words)
-    for idx, nu in enumerate(num):
-        # 탐색할 책이라면
-        if nu == "1":
-            temp_min += int(cost[idx])
-            # backtracking
-            if temp_min > minimum:
-                continue
-            title_visited = [0] * len(title[idx])
-            # 주어진 title 전체탐색
-            for ti_idx, ti in enumerate(title[idx]):
-                # 주어진 ANT 전체탐색
-                for word_idx in range(len(words)):
-                    # 방문한 곳이면 continue
-                    if visited[word_idx] == 1 or title_visited[ti_idx] == 1:
-                        continue
-                    # title과 현재 단어가 같다면 방문처리
-                    if words[word_idx] == ti:
-                        visited[word_idx] = 1
-                        title_visited[ti_idx] = 1
-    
-    if sum(visited) == len(words):
-        minimum = min(temp_min, minimum)
-if minimum == 1e9:
-    minimum = -1
-print(minimum)
+# 초기값을 무한대로 설정
+result = float('inf')
+
+# 2^N개의 조합을 탐색
+for i in range(1<<N): # 2^N = 1 << N
+    price = 0
+    alpha = Counter()
+    # 현재 책이 현재 조합에서 선택되었는지 확인
+    for j in range(N):
+        if (i & 1 << j): # 뒤에서부터 연산 i & (1 << j), i의 j번째 비트가 1인지 확인
+            price += prices[j][0] # 책의 가격을 더함
+            alpha += prices[j][1] # 책 제목의 알파벳을 더함
+
+    if check(alpha): # 선택된 책들로 단어를 만들 수 있는지 확인
+        result = min(result, price) # 최소비용 갱신
+
+print(result if not result == float('inf') else -1)
