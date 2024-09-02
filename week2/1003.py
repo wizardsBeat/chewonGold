@@ -1,20 +1,15 @@
-# 테스트 케이스 입력받기
-T = int(input())
+import sys
 
-# 0과 1을 담을 수 있는 리스트 정의
-max_n = 40  # 문제에서 주어진 n의 최대값
-dp = [[0, 0] for _ in range(max_n + 1)]
+T = int(sys.stdin.readline()) # 테스트 케이스의 개수
 
-# 초기값 설정
-dp[0] = [1, 0]  # fibo(0)은 0이 1번, 1이 0번 호출됨
-dp[1] = [0, 1]  # fibo(1)은 0이 0번, 1이 1번 호출됨
+# Dynamic Programming
+dp = [(0, 0)] * 41 # 모든 테스트 케이스의 경우
+dp[0] = (1, 0) # 피보나치 수열이 0일 때
+dp[1] = (0, 1) # 피보나치 수열이 1일 때
 
-# 동적 프로그래밍으로 0과 1의 호출 횟수 계산
-for i in range(2, max_n + 1):
-    dp[i][0] = dp[i-1][0] + dp[i-2][0]  # 0의 호출 횟수
-    dp[i][1] = dp[i-1][1] + dp[i-2][1]  # 1의 호출 횟수
+for i in range(2, 41):
+  dp[i] = (dp[i-1][0] + dp[i-2][0], dp[i-1][1] + dp[i-2][1]) # dp[i]에서 0이 호출된 횟수는 dp[i-1]에서 0이 호출된 횟수 + dp[i-2]에서 0이 호출된 횟수 (1도 동일)
 
-# 각 테스트 케이스에 대해 결과 출력
 for _ in range(T):
-    n = int(input())
-    print(dp[n][0], dp[n][1])
+  N = int(sys.stdin.readline())
+  print(dp[N][0], dp[N][1])
