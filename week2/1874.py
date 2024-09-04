@@ -1,35 +1,28 @@
+# 수열의 개수 입력
 import sys
+n = int(sys.stdin.readline())
 
-input = sys.stdin.readline
+# 수열 리스트
+li = [int(sys.stdin.readline()) for _ in range(n)]
 
-stack = []  #빈 스택 만들기
+stack = []
+result = []
+current_number = 1  # 현재 넣을 수 있는 숫자 (1부터 n까지)
 
-n = int(input()) #숫자 입력
-
-li = [] #리스트 만들기
-for i in range(n):  #숫자 입력 후 리스트에 저장
-    a = int(input())
-    li.append(a)
-
-num = 1     #최근에 스택에 넣은 숫자
-ans = []    #정답 + - 저장할 리스트
-flag = 1    #출력 가능한지 검사할 flag
-
-for i in li:    #입력받은 숫자 리스트 반복
-    while num <= i: #num <= i 일 때는 스택에 + 추가
-        ans.append('+')
-        stack.append(num)
-        num += 1
-
-    if stack[-1] > i:   #스택 맨 위에 있는 값이 i 보다 크면 수열 만들기 불가
-        flag = 0
-
-    if stack[-1] == i: #pop #스택 맨 위에 있는 수가 i 와 같으면 pop
-        ans.append('-')
-        stack.pop()
+for number in li:
+    # 현재 숫자를 목표 수열의 숫자까지 push
+    while current_number <= number:
+        stack.append(current_number)
+        result.append('+')
+        current_number += 1
     
-if flag:    #flag == 1이면 수열 만들기 가능
-    for i in ans:
-        print(i)
-else:       #flag == 0이면 수열 만들기 불가능
-    print("NO")
+    # 스택의 최상단이 목표 숫자와 같으면 Pop
+    if stack[-1] == number:
+        stack.pop()
+        result.append('-')
+    # 목표수열을 만들 수 없을 때
+    else:
+        print("NO")
+        break
+else: # 수열을 정상적으로 다 만들었다면
+    print('\n'.join(result))
