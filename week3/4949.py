@@ -10,11 +10,13 @@ while sen != '.':
     elif sen[i] == '[':
       stack.append(sen[i])
     elif sen[i] == ')':
-      if stack[-1] == '(':
-        stack.pop()
+      if stack:
+        if stack[-1] == '(':
+          stack.pop()
     elif sen[i] == ']':
-      if stack[-1] == '[':
-        stack.pop()
+      if stack:
+        if stack[-1] == '[':
+          stack.pop()
   if stack:
     print('no')
   else:
