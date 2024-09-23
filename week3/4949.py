@@ -3,20 +3,19 @@ import sys
 sen = sys.stdin.readline().rstrip()
 
 while sen != '.':
-  pstack = [] # 소괄호(parentheses) 스택
-  sstack = [] # 대괄호(square brackets) 스택
+  stack = []
   for i in range (len(sen)):
     if sen[i] == '(':
-      pstack.append(sen[i])
+      stack.append(sen[i])
     elif sen[i] == '[':
-      sstack.append(sen[i])
+      stack.append(sen[i])
     elif sen[i] == ')':
-      if pstack:
-        pstack.pop()
+      if stack[-1] == '(':
+        stack.pop()
     elif sen[i] == ']':
-      if sstack:
-        sstack.pop()
-  if sstack or pstack:
+      if stack[-1] == '[':
+        stack.pop()
+  if stack:
     print('no')
   else:
     print('yes')
