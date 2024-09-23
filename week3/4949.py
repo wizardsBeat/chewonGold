@@ -1,11 +1,10 @@
 import sys
 
 sen = sys.stdin.readline().rstrip()
-pstack = [] # 소괄호(parentheses) 스택
-sstack = [] # 대괄호(square brackets) 스택
-
 
 while sen != '.':
+  pstack = [] # 소괄호(parentheses) 스택
+  sstack = [] # 대괄호(square brackets) 스택
   for i in range (len(sen)):
     if sen[i] == '(':
       pstack.append(sen[i])
