@@ -1,28 +1,29 @@
-lines = int(input())
-arr = []
-whiteslices = 0
-blueslices = 0
-for _ in range(lines):
-    temp = list(map(int, input().split()))
-    arr.append(temp)
+import sys
 
-def cut(x, y, length):
-    global whiteslices, blueslices
-    color = arr[x][y]
-    for i in range(x, x + length):
-        for j in range(y, y + length):
-            if arr[i][j] != color:
-                half = length // 2
-                cut(x, y, half)
-                cut(x, y + half, half)
-                cut(x + half, y, half)
-                cut(x + half, y + half, half)
-                return
-    if color == 0:
-        whiteslices += 1
-    else:
-        blueslices += 1
+n = int(sys.stdin.readline())
+arr = [[] for _ in range (n)]
+result = []
 
-cut(0, 0, lines)
-print(whiteslices)
-print(blueslices)
+for i in range (n):
+  li = list(map(int, sys.stdin.readline().split()))
+  arr[i] = li
+
+def cut(x, y, n):
+  color = arr[x][y]
+  for i in range(x, x+n): # x 끝까지 확인
+    for j in range (y, y+n): # y 끝까지 확인
+      if color != arr[i][j]: # 색이 다른 부분이 있다면
+        half = n//2
+        cut(x, y, half) # 2사분면
+        cut(x+half, y, half) # 1사분면
+        cut(x, y+half, half) # 3사분면
+        cut(x+half, y+half, half) # 4사분면
+        return
+  if color == 0: # 색이 모두 같다면 result에 추가
+    result.append(0)
+  else:
+    result.append(1)
+
+cut(0,0,n)
+print(result.count(0)) # 0의 갯수가 하얀색의 갯수
+print(result.count(1)) # 1의 갯수가 파란색의 갯수
