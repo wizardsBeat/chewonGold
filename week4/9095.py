@@ -1,14 +1,12 @@
 T = int(input())
 
-def dp(n):
-    if n >= 4:
-        return dp(n-1)+dp(n-2)+dp(n-3)
-    elif n == 1:
-        return 1
-    elif n == 2:
-        return 2
-    elif n == 3:
-        return 4
+dp_cache = [0] * 11
+dp_cache[1] = 1
+dp_cache[2] = 2
+dp_cache[3] = 4
+
+for i in range(4, 11):
+    dp_cache[i] = dp_cache[i-1] + dp_cache[i-2] + dp_cache[i-3]
 
 for _ in range(T):
-    print(dp(int(input())))
+    print(dp_cache[int(input())])
