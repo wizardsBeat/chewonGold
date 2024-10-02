@@ -1,15 +1,23 @@
-#하노이 함수
-def hanoi_f(one, three, n):
+def hanoi(n, start, end, mid):
     if n == 1:
-        print(one,three)
+        print(f"{start} {end}")  # 원판을 start에서 end로 이동
         return
+    # N-1개의 원판을 start에서 mid로 이동
+    hanoi(n - 1, start, mid, end)
+    # 가장 큰 원판을 start에서 end로 이동
+    print(f"{start} {end}")
+    # N-1개의 원판을 mid에서 end로 이동
+    hanoi(n - 1, mid, end, start)
 
-    hanoi_f(one, 6-one-three, n-1) #1단계 (1->2)
-    print(one, three) #2단계 (마지막원반 1->3)
-    hanoi_f(6-one-three, three, n-1) #3단계 (2->3)
+# 입력 받기
+N = int(input())
 
-#메인
-n = int(input())
-print(2**n-1)
-if n <= 20:
-    hanoi_f(1,3,n)
+# 이동 과정 출력 여부 결정
+total_moves = 2**N - 1
+if N <= 20:
+    # 총 이동 횟수 출력
+    print(total_moves)
+    # 하노이탑 이동 과정 출력
+    hanoi(N, 1, 3, 2)
+else:
+    print(total_moves)
