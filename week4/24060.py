@@ -1,51 +1,58 @@
-import sys
+def merge_sort(arr, p, r, K):
+    if p < r:
+        q = (p + r) // 2
+        merge_sort(arr, p, q, K)
+        merge_sort(arr, q + 1, r, K)
+        merge(arr, p, q, r, K)
 
-n, k = map(int, sys.stdin.readline().split())
-arr = list(map(int, sys.stdin.readline().split()))
+def merge(A, p, q, r, K):
+    global count, result  # count는 저장된 횟수, result는 K번째 저장된 값
+    left = A[p:q+1]  # 왼쪽 부분 배열 (A[p..q])
+    right = A[q+1:r+1]  # 오른쪽 부분 배열 (A[q+1..r])
+    
+    i = 0  # 왼쪽 배열의 인덱스
+    j = 0  # 오른쪽 배열의 인덱스
+    k = p  # 원래 배열 A에 병합된 결과를 저장할 인덱스
+    
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            A[k] = left[i]
+            i += 1
+        else:
+            A[k] = right[j]
+            j += 1
+        
+        count += 1
+        if count == K:
+            result = A[k]  # K번째 저장된 값을 result에 저장
+        k += 1
+    
+    # 왼쪽 배열에 남은 요소가 있으면 A에 복사
+    while i < len(left):
+        A[k] = left[i]
+        i += 1
+        count += 1
+        if count == K:
+            result = A[k]  # K번째 저장된 값을 result에 저장
+        k += 1
+    
+    # 오른쪽 배열에 남은 요소가 있으면 A에 복사
+    while j < len(right):
+        A[k] = right[j]
+        j += 1
+        count += 1
+        if count == K:
+            result = A[k]  # K번째 저장된 값을 result에 저장
+        k += 1
 
-def merge_sort(arr, left, right):
-  # arr에 원소가 하나씩만 남을 때까지 재귀호출
-  if left < right:
-    mid = (left + right) // 2
-    merge_sort(arr, left, mid) # 왼쪽 배열 정렬
-    merge_sort(arr, mid + 1, right) # 오른쪽 배열 정렬
-    merge(arr, left, mid, right)
+# 입력 및 초기 설정
+N, K = map(int, input().split())
+arr = list(map(int, input().split()))
+count = 0  # 저장 횟수를 추적할 전역 변수
+result = -1  # K번째 저장된 값을 저장하는 변수 (-1로 초기화)
 
-def merge(arr, left, mid, right):
-  global count, result # K번째 배열 체크용
+# 병합 정렬 실행
+merge_sort(arr, 0, N - 1, K)
 
-  temp = [] # 새롭게 정렬된 배열
-  i, j = left, mid + 1 # 각각 가장 처음에 오게 되는 수
-
-  # 두 부분 배열을 병합하는 과정
-  while i <= mid and j <= right: # 각 배열의 끝까지
-    if arr[i] <= arr[j]: # 왼쪽 배열보다 오른쪽 배열 값이 클 때
-      temp.append(arr[i])
-      i += 1
-    else:
-      temp.append(arr[j])
-      j += 1
-  
-  # 왼쪽 배열이 먼저 다 정렬된 경우
-  while i <= mid:
-    temp.append(arr[i])
-    i += 1
-  
-  # 오른쪽 배열이 먼저 다 정렬된 경우
-  while j <= right:
-    temp.append(arr[j])
-    j += 1
-  
-  # 병합 결과를 원래 배열에 반영
-  for idx in range (len(temp)):
-    arr[left + idx] = temp[idx] # left는 현재 병합중인 배열의 시작 인덱스 (임시 배열의 값을 원래 배열의 위치에 덮어씀)
-    count += 1
-    if count == k:
-      result = arr[left + idx]
-
-count = 0
-result = -1 # k번째 원소가 없는 경우 -1 return
-
-merge_sort(arr, 0, n-1) # 0부터 이므로 n-1까지
-
+# 결과 출력
 print(result)
