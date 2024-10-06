@@ -1,23 +1,23 @@
-def f(n, a, b, c):
-    """
-    n개의 원판을 장대 a에서 장대 c로 옮기는 함수
-    a: 출발 장대
-    b: 보조 장대
-    c: 목표 장대
-    """
-    if n == 1:  # 원판이 하나라면 바로 옮긴다
-        print(a, c, sep=" ")
-    else:
-        # n-1개의 원판을 a에서 b로 옮긴다 (c를 보조 장대로 사용)
-        f(n - 1, a, c, b)
-        # 1개의 원판을 a에서 c로 옮긴다
-        f(1, a, b, c)
-        # n-1개의 원판을 b에서 c로 옮긴다 (a를 보조 장대로 사용)
-        f(n - 1, b, a, c)
+def hanoi(n, start, end, mid):
+    if n == 1:
+        print(f"{start} {end}")  # 원판을 start에서 end로 이동
+        return
+    # N-1개의 원판을 start에서 mid로 이동
+    hanoi(n - 1, start, mid, end)
+    # 가장 큰 원판을 start에서 end로 이동
+    print(f"{start} {end}")
+    # N-1개의 원판을 mid에서 end로 이동
+    hanoi(n - 1, mid, end, start)
 
-n = int(input())  # 원판의 개수 입력
-print(2 ** n - 1)  # 옮긴 횟수는 2^n - 1
+# 입력 받기
+N = int(input())
 
-if n <= 20:
-    f(n, 1, 2, 3)  # 원판 이동 과정 출력
-    
+# 이동 과정 출력 여부 결정
+total_moves = 2**N - 1
+if N <= 20:
+    # 총 이동 횟수 출력
+    print(total_moves)
+    # 하노이탑 이동 과정 출력
+    hanoi(N, 1, 3, 2)
+else:
+    print(total_moves)

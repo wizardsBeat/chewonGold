@@ -1,26 +1,17 @@
+arr = input()
+arr_ch = arr.replace('()', '+')  # 레이저를 '+'로 변환
 
-# 지금까지 얻은 레이저의 개수
-# (이 등장하고 ) 나올때까지 레이저의 개수 + 1을 하면 잘라진 개수
+answer = 0  # 최종 결과값 (잘린 쇠막대기 조각 수)
+stack = []  # 열린 괄호 '('를 저장할 스택
 
-import sys
+# 배열을 순회하면서 괄호와 레이저 처리
+for i in range(len(arr_ch)):
+    if arr_ch[i] == '(':  # 열린 괄호: 쇠막대기 시작
+        stack.append('(')  # 스택에 추가
+    elif arr_ch[i] == '+':  # 레이저: 현재 스택에 있는 열린 괄호만큼 쇠막대기가 잘림
+        answer += len(stack)  # 스택의 길이 = 열린 괄호의 수 = 잘리는 쇠막대기의 수
+    elif arr_ch[i] == ')':  # 닫힌 괄호: 쇠막대기 끝남
+        stack.pop()  # 열린 괄호 하나 닫힘
+        answer += 1  # 쇠막대기의 끝이므로 잘린 조각 하나 추가
 
-li = sys.stdin.readline().rstrip()
-
-def solution(s):
-    stack = []
-    pieces = 0  # 잘려진 조각 수
-
-    for i in range(len(s)):
-        if s[i] == '(':  # 여는 괄호는 스택에 추가 (쇠막대기의 시작)
-            stack.append('(')
-        else:  # 닫는 괄호인 경우
-            stack.pop()  # 일단 스택에서 하나 제거 (쇠막대기 끝 or 레이저)
-            if s[i - 1] == '(':  # 바로 이전이 여는 괄호이면 레이저
-                pieces += len(stack)  # 스택에 있는 쇠막대기 수만큼 조각이 생김
-            else:  # 쇠막대기의 끝을 만난 경우
-                pieces += 1  # 쇠막대기 하나가 끝났으므로 조각 하나 추가
-
-    return pieces
-
-
-print(solution(li))
+print(answer)
