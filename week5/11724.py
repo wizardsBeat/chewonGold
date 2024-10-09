@@ -1,36 +1,35 @@
 import sys
-sys.setrecursionlimit(10000)    # 재귀 깊이 한도를 10000으로 늘리기
+sys.setrecursionlimit(10**6)  # 재귀 한도 설정
 input = sys.stdin.readline
 
-# 정점 개수, 간선 개수
-N, M = map(int, input().rstrip().split())
 
-# 정점 개수만큼 빈 리스트 만들기 -> 연결된 정점 저장할
-graph = [[] for _ in range(N)]
+def dfs(node, graph, visited):
+    # 현재 노드를 방문처리
+    visited[node] = True
 
-# 각 점에 어느 점이 연결 됐는지...
+    # 현재 노드와 연결된 모든 노드를 재귀적으로 방문
+    for neighbor in graph[node]:
+        if not visited[neighbor]:   # 방문하지 않은 이웃 노드를 탐색
+            dfs(neighbor, graph, visited)
+
+# 입력받기
+N, M = map(int, input().split())    # N: 정점의 개수, M: 간선의 개수
+graph = [[] for _ in range(N + 1)]  # 인접 리스트로 그래프 초기화
+visited = [False] * (N + 1)         # 방문 여부를 확인하는 리스트 (1~N 사용)
+
+# 그래프 구성 (양방향 연결이므로 양쪽 모두 추가)
 for _ in range(M):
-    u, v = map(int, input().rstrip().split())
-    
-    # 양방향이므로 양쪽에 추가해주기
-    # index를 위해 -1 해준다
-    graph[u-1].append(v-1)
-    graph[v-1].append(u-1)
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
 
-# 방문 여부
-visited = [False] * N
+# 연결 요수의 개수 카운트
+cnt = 0
 
-def dfs(v): # v = 현재 방문하는 정점
-    visited[v] = True    # 현재 정점 = 방문 처리
-    for neighbor in graph[v]:    # 이 점에 연결된 점들 탐색
-        if not visited[neighbor]:    # 연결된 점 중에 방문 안한 점이 있으면
-            dfs(neighbor)    # 그 점에 대해 다시 dfs
+# 모든 노드를 확인하며 방문하지 않은 노드를 시작으로 DFS 실행
+for node in range(1, N +1):
+    if not visited[node]:   # 방문하지 않은 노드를 찾으면
+        dfs(node, graph, visited)   # 해당 노드를 시작으로 DFS 탐색
+        cnt += 1   # 새로운 연결 요소 발견
 
-result = 0
-
-for i in range(N):
-    if not visited[i]:    # 아직 방문하지 않은 점이 있으면
-        dfs(i)    # 그 정점에서 dfs 시작
-        result += 1 # 새 연결 요소가 발견됐으므로 개수 증가
-
-print(result)
+print(cnt)
