@@ -1,19 +1,14 @@
-P = [0,1,1,1,2,2,3,4,5,7,9]
-#파도반 수열 P[N] = P[N-2] + P[N-3]
+import sys
+input = sys.stdin.readline
 
-def wave(x):
-    if x < len(P):
-        return P[x]
-    
-    for i in range(len(P), x+1):
-        P.append(P[i - 2] + P[i - 3])
-    
-    return P[x]
+P = [0, 1, 1, 1]
+n = 4
+while True:
+    if n > 100: break
+    P.append(P[n-2] + P[n-3])
+    n+=1
 
-T = int(input())
-answer = []
-for i in range(T):
-    N = int(input())
-    answer.append(str(wave(N)))
-
-print('\n'.join(answer))
+T = int(input().rstrip())
+for _ in range(T):
+    N = int(input().rstrip())
+    print(P[N])
