@@ -1,19 +1,15 @@
 import sys
 
-input = sys.stdin.readline
+N = int(sys.stdin.readline())
+tops = list(map(int, sys.stdin.readline().split()))
 
-N = int(input().strip())
-tower = list(map(int, input().split()))
 stack = []
-answer = []
 
 for i in range(N):
-    while stack and tower[i] >= tower[stack[-1]]:
+    while stack and tops[i] >= tops[stack[-1]]:
         stack.pop()
     if not stack:
-        answer.append(0)
+        print(0, end=" ")
     else:
-        answer.append(stack[-1] + 1)
+        print(stack[-1]+1, end=" ")
     stack.append(i)
-
-print(" ".join(map(str, answer)))
