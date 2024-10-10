@@ -22,7 +22,7 @@ for i in range(1, len(diffs)):
 
 # 최대공약수의 모든 약수를 구한다
 answer = []
-for i in range(2, int(g**0.5) + 1): # 제곱근을 사용하여 약수쌍을 찾으면 효율적임
+for i in range(2, int(g**0.5) + 1): # 제곱근을 사용하여 약수쌍을 찾으면 효율적
     if g % i == 0:
         answer.append(i)
         if i != g // i:
