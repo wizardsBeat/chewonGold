@@ -18,7 +18,7 @@ for i in range (1, n):
 # 인접한 숫자들 간의 차이의 최대공약수를 구함
 gcd_value = diff_list[0]
 
-# 두 수의 차이와 최대 공약수의 최대 공약수를 구함
+# 두 수의 차이와 최대 공약수의 공약수를 구함
 for i in range (1, n-1):
   gcd_value = math.gcd(gcd_value, diff_list[i])
 
