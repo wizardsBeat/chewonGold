@@ -1,33 +1,31 @@
 import sys
-input = sys.stdin.readline
+import math
 
-N = int(input().rstrip())    # 숫자의 개수
-nums = [int(input().rstrip()) for _ in range(N)]
+n = int(sys.stdin.readline()) # number of numbers (2~100)
+num_list = []
 
-## 1. 주어진 수들 간의 차이를 구한다.
-## 2. 그 차이들의 최대공약수를 구한다.
-## 3. 최대공약수의 약수들을 구한다.
+for _ in range (n):
+  num = int(sys.stdin.readline()) # number (1~1,000,000,000)
+  num_list.append(num)
 
-# 최대공약수
-def GCD(a,b):
-    while b:
-        a, b = b, a%b
-    return a
+num_list.sort()
 
-# 0번 숫자를 기준으로 다른 숫자들과의 차이를 구한다
-# 0번 - 1번 차이를 1빠로 놓고..
-result = abs(nums[1] - nums[0])
+diff_list = []
+for i in range (1, n):
+  diff = num_list[i] - num_list[i-1]
+  diff_list.append(diff)
 
-# 모든 다른 차이에 대해 최대공약수를 구한다
-for i in range(2, N):
-    result = GCD(result, abs(nums[i] - nums[0]))
+# 인접한 숫자들 간의 차이의 최대공약수를 구함
+gcd_value = diff_list[0]
 
-# 약수 구하기
-div = set()    # set을 써서 중복 제거 
-for i in range(2, int(result**0.5)+1):
-    if result % i == 0: 
-        div.add(i)
-        div.add(result // i)
+# 두 수의 차이와 최대 공약수의 공약수를 구함
+for i in range (1, n-1):
+  gcd_value = math.gcd(gcd_value, diff_list[i])
 
-div.add(result)
-print(*sorted(div))
+# 최대공약수의 약수 구하기
+result = [gcd_value]
+for i in range (2, int(gcd_value ** 0.5)+1): # 문제에서 1은 제외했으므로 2부터 시작
+  if gcd_value % i == 0:
+    result.append(i)
+    if i != gcd_value // i:
+      result.append(gcd_value // i)
