@@ -1,18 +1,14 @@
-def padovan_sequence(n):
-    # 초기값 설정
-    dp = [0] * (n + 1)
-    dp[1], dp[2], dp[3] = 1, 1, 1
-    
-    # 점화식을 이용하여 수열을 계산
-    for i in range(4, n + 1):
-        dp[i] = dp[i - 2] + dp[i - 3]
-    
-    return dp[n]
+import sys
+input = sys.stdin.readline
 
-T = int(input())
-n = [] * T
+P = [0, 1, 1, 1]
+n = 4
+while True:
+    if n > 100: break
+    P.append(P[n-2] + P[n-3])
+    n+=1
+
+T = int(input().rstrip())
 for _ in range(T):
-    n.append(int(input()))
-
-for i in range(T):
-    print(padovan_sequence(n[i]))
+    N = int(input().rstrip())
+    print(P[N])
