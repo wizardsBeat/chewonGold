@@ -29,6 +29,3 @@ for i in range (2, int(gcd_value ** 0.5)+1): # 문제에서 1은 제외했으므
     result.append(i)
     if i != gcd_value // i:
       result.append(gcd_value // i)
-
-result.sort()
-print(" ".join(map(str, result)))
