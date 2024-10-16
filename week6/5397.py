@@ -1,27 +1,24 @@
-#1406번이랑 비슷하게 풀었어요
 import sys
 from collections import deque
-input = sys.stdin.readline
 
-N = int(input().strip())
-L = []
+n = int(sys.stdin.readline()) # number of test case
 
-answer = []  
-for i in range(N):
-    L.append(list(input().strip())) # 입력 먼저 받고 L list에 append
-    # 커서를 기준으로 left_stack, right_stack 일단 둘 다 비워놓을 것임
-    left_stack = deque()
-    right_stack = deque()
-    for j in range(len(L[i])):
-        if L[i][j] == "<" and left_stack:
-            right_stack.appendleft(left_stack.pop())
-        elif L[i][j] == ">" and right_stack:
-            left_stack.append(right_stack.popleft()) # popleft 하려고 deque 사용
-        elif L[i][j] == "-" and left_stack:
-            left_stack.pop()
-        elif L[i][j].isalpha() or L[i][j].isnumeric(): # 알파벳이나 숫자면 left_stack에 append
-            left_stack.append(L[i][j])
-    answer.append("".join(left_stack+right_stack))
+for _ in range (n):
+  text = sys.stdin.readline().strip()
+  left = deque()
+  right = deque()
 
-
-print("\n".join(answer))
+  for t in text:
+    if t == '<':
+      if left: # 커서 왼쪽에 무언가 존재한다면
+        right.appendleft(left.pop()) # 왼쪽에서 오른쪽으로 이동
+    elif t == '>':
+      if right: # 커서 오른쪽에 무언가 존재한다면
+        left.append(right.popleft()) # 오른쪽에서 왼쪽으로 이동
+    elif t == '-':
+      if left: # 커서 왼쪽에 무언가 존재한다면
+        left.pop() # 왼쪽에서 문자 삭제
+    else: # cmd가 아닌 것이 들어오는 경우
+      left.append(t) # 왼쪽에 문자 추가 (커서가 문자 오른쪽으로 이동하므로 왼쪽에 추가되는 것과 동일)
+  result = ''.join(left) + ''.join(right)
+  print(result)
