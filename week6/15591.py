@@ -1,31 +1,31 @@
 import sys
 from collections import deque
 
-n, q = map(int, sys.stdin.readline().split()) # n: node 개수 q: 질문 개수
-arr = [[] for _ in range(n+1)]
+input = sys.stdin.readline
 
-# 배열 구성
-for _ in range (n-1):
-  v1, v2, r = map(int, sys.stdin.readline().split())
-  arr[v1].append((v2, r))
-  arr[v2].append((v1, r))
+N, Q = map(int, input().split())
 
-# BFS 탐색 함수
-def bfs(k, v):
-  deq = deque([v])
-  visited = [False] * (n+1)
-  visited[v] = True
-  cnt = 0
+graph = [[] for _ in range(N + 1)]
+for _ in range(N - 1):
+    p, q, r = map(int, input().split())
+    graph[p].append((q, r))
+    graph[q].append((p, r))
 
-  while deq:
-    current = deq.popleft()
-    for neighbor, usado in arr[current]:
-      if not visited[neighbor] and usado >= k:
-        visited[neighbor] = True
-        deq.append(neighbor)
-        cnt += 1
-  return cnt
-
-for _ in range (q):
-  k, v = map(int, input().split())
-  print(bfs(k, v))
+for _ in range(Q):
+    k, v = map(int, input().split())
+    
+    visited = [False] * (N + 1) # 방문 기록을 남기기 위해 visited list 생성
+    visited[v] = True
+    queue = deque([v])
+    count = 0
+    
+    while queue:
+        curr_video = queue.popleft()
+        
+        for next_video, relevance in graph[curr_video]:
+            if not visited[next_video] and relevance >= k: # 아직 방문 안했고 유사도가 k보다 높을때
+                visited[next_video] = True
+                count += 1
+                queue.append(next_video)
+    
+    print(count)
