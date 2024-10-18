@@ -1,14 +1,24 @@
-import sys
-input = sys.stdin.readline
+# 백준 16967번 풀이
 
 H, W, X, Y = map(int, input().split())
-B = []
-for _ in range(H + X):
-    B.append(list(map(int, input().split())))
 
-for i in range(X, H):
-    for j in range(Y, W):
-        B[i][j] = B[i][j] - B[i-X][j-Y] #  Bi,j = Ai,j + Ai-X,j-Y 이거니까 B에서 그걸 빼주는 작업을 하는 것
+# 배열 B
+B = [list(map(int, input().split())) for _ in range(H + X)]
 
-for i in B[:H]:
-    print(*i[:W]) #2차원 배열 slicing
+# 배열 A 초기화
+A = [[0] * W for _ in range(H)]
+
+# 배열 A 복원
+for i in range(H):
+    for j in range(W):
+        # 겹치지 않는 부분
+        if i < X or j < Y:
+            A[i][j] = B[i][j]
+        # 겹치는 부분
+        else:
+            A[i][j] = B[i][j] - A[i - X][j - Y]
+
+# 배열 A 출력
+for arr in A:
+    print(*arr)
+    
