@@ -1,17 +1,17 @@
-import heapq
+N = int(input())
 
-N = int(input())  # N 입력 받기
+M = []
 
-heap = []
-
-for _ in range(N):
-    num_list = list(map(int, input().split()))  # 한 줄씩 숫자 입력받기
-    for num in num_list:
-        if len(heap) < N:
-            heapq.heappush(heap, num)  # 힙이 N개보다 작으면 추가
+for i in range(N):
+    num = list(map(int, input().split()))
+    
+    for n in num:
+        if len(M) < N:
+            M.append(n)
+            M.sort()
         else:
-            if num > heap[0]:  # 새로운 숫자가 힙의 최소값보다 크면 교체
-                heapq.heapreplace(heap, num)
+            if M[0] < n:
+                M[0] = N
+                M.sort()
 
-# 힙에 남은 값 중 가장 작은 값이 전체에서 N번째 큰 값
-print(heap[0])
+print(M[0])
