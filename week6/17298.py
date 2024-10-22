@@ -1,17 +1,18 @@
-import sys
-input = sys.stdin.readline
+N = int(input())
+A = list(map(int, input().split()))
 
-n = int(input().strip())
-arr = list(map(int, input().strip().split()))
-result = [-1] * n  # 결과를 저장할 리스트를 -1로 초기화
-stack = []  # 스택 초기화
+result = [-1] * N
+stack = []
 
-for i in range(n):
-    # 스택이 비어있지 않고, 현재 수가 스택의 인덱스 값보다 크면
-    while stack and arr[stack[-1]] < arr[i]:
-        result[stack.pop()] = arr[i]
-    # 현재 인덱스를 스택에 추가
+for i in range(N):
+    # 스택에 뭐가 있을 때, 스택에 저장된 인덱스가 가리키는 값과 현재 값을 비교한다
+    # 스택에 저장된 인덱스가 가리키는 값 < 현재 값
+    while stack and A[stack[-1]] < A[i]:
+        idx = stack.pop()    # 스택에서 인덱스 꺼내기
+        result[idx] = A[i]   # 꺼낸 인덱스 위치에 있는 숫자의 오큰수 = 현재 값
+    
+    # 스택이 비어있거나, 오큰수가 없는 경우
+    # 스택에 현재 인덱스 저장
     stack.append(i)
 
-# 결과 출력
 print(*result)
