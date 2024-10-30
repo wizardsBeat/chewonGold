@@ -1,33 +1,29 @@
 import sys
 from collections import deque
-input = sys.stdin.readline
 
-N, M = map(int, input().split())
-maze = []
-for _ in range(N):
-    maze.append(list(map(int, input().strip())))
+N, M = map(int, sys.stdin.readline().split()) # 위치
+arr = []
 
-def BFS(x, y):
-    dx = [-1, 1, 0,0]
-    dy = [0,0,-1,1]
-    queue = deque()
-    queue.append((x,y))
+# 미로
+for _ in range (N):
+  row = list(map(int, sys.stdin.readline().strip()))
+  arr.append(row)
 
-    while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+def bfs(x, y):
+  nv = deque() # 방문해야하는 위치
+  nv.append((x, y))
+  directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-            if nx<0 or nx>=N or ny<0 or ny>=M:
-                continue
-            if maze[nx][ny]==0:
-                continue
-            if maze[nx][ny] == 1:
-                maze[nx][ny] = maze[x][y]+1
-                queue.append((nx,ny))
-                
-    
-    return maze[N-1][M-1]
+  while nv:
+    x, y = nv.popleft()
 
-print(BFS(0,0))
+    for dx, dy in directions:
+      nx, ny = x + dx, y + dy
+
+      if 0 <= nx < N and 0 <= ny < M and arr[nx][ny] == 1:
+        nv.append((nx, ny))
+        arr[nx][ny] = arr[x][y] + 1 # 이전 위치에서 한 칸 이동했으므로 이동거리 1 증가
+  
+  return arr[N-1][M-1]
+
+print(bfs(0, 0))
