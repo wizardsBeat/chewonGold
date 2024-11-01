@@ -1,46 +1,36 @@
-import sys
 from collections import deque
 
-n, m = map(int, sys.stdin.readline().split())
-iarr = [] # input array
-s = ()
-for i in range (n):
-  row = list(map(int, sys.stdin.readline().split()))
-  iarr.append(row)
-  if s: # 2 appears once in array
-    continue
-  else:
-    for j in range (m):
-      if row[j] == 2:
-        s = (i, j) # start point == 2
-darr = [[0]*m for _ in range (n)] # distance array (answer)
-darr[s[0]][s[1]] = 0
+n, m = map(int, input().split())
+graph = [list(map(int, input().split())) for _ in range(n)]
+visited = [[-1] * m for _ in range(n)]
+dx = [0, 0, -1, 1]
+dy = [-1, 1, 0, 0]
 
-def bfs(start):
-  nv = deque() # need visited
-  nv.append(start)
+def bfs(x, y):
+    queue = deque([(x, y)])
+    visited[x][y] = 0
+    
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if 0 <= nx < n and 0 <= ny < m and visited[nx][ny] == -1:
+                if graph[nx][ny] == 1:
+                    visited[nx][ny] = visited[x][y] + 1
+                    queue.append((nx, ny))
+                elif graph[nx][ny] == 0:
+                    visited[nx][ny] = 0
 
-  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == 2:
+            bfs(i, j)
 
-  while nv:
-    x, y = nv.popleft()
-
-    for dx, dy in directions: # move directions
-      nx, ny = x + dx, y + dy
-
-      if 0 <= nx < n and 0 <= ny < m and iarr[nx][ny] == 1 and darr[nx][ny] == 0: # within range, can be visited, and not visited yet
-        nv.append((nx, ny))
-        darr[nx][ny] = darr[x][y] + 1
-  
-  return darr
-
-darr = bfs(s)
-
-# 갈 수 있었지만 갈 수 없게된 땅 확인
-for i in range (n):
-  for j in range (m):
-    if iarr[i][j] == 1 and darr[i][j] == 0:
-      darr[i][j] = -1
-
-for i in range (n):
-  print(' '.join(map(str,darr[i])))
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == 0:
+            print(0, end=' ')
+        else:
+            print(visited[i][j], end=' ')
+    print()

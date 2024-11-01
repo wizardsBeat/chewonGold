@@ -1,44 +1,49 @@
 import sys
+input = sys.stdin.readline
 
-n = int(sys.stdin.readline())
-c = [list(sys.stdin.readline()) for _ in range(n)]
+N = int(input().strip())
+candy = []
+for i in range(N):
+    candy.append(list(input().strip()))
 
-def checkCurMaxNum():
-  max_cnt =1
-  for i in range (n):
-    # 가로
-    cnt = 1
-    for j in range (1, n):
-      if c[i][j] == c[i][j-1]:
-        cnt += 1
-      else:
-        cnt = 1
-      max_cnt = max(cnt, max_cnt)
-    
-    # 세로
-    cnt = 1
-    for j in range (1, n):
-      if c[j][i] == c[j-1][i]:
-        cnt += 1
-      else:
-        cnt = 1
-      max_cnt = max(cnt, max_cnt)
-  
-  return max_cnt
+def check_row(arr, row): # 연속되는 사탕 개수 세기
+    max_count = 1
+    count = 1
+    for j in range(1, N):
+        if arr[row][j] == arr[row][j-1]:
+            count += 1
+        else:
+            count = 1
+        max_count = max(max_count, count)
+    return max_count
 
-# 오른쪽 swap, 아래쪽 swap
-result = 1
-for i in range (n):
-  for j in range (n-1):
-    # 오른쪽 swap
-    if j + 1 < n and c[i][j] != c[i][j+1]:
-      c[i][j], c[i][j+1] = c[i][j+1], c[i][j] # swap
-      result = max(result, checkCurMaxNum())
-      c[i][j], c[i][j+1] = c[i][j+1], c[i][j] # return
-    # 왼쪽 swap
-    if i+1 < n and c[i][j] != c[i+1][j]:
-      c[i][j], c[i+1][j] = c[i+1][j], c[i][j] # swap
-      result = max(result, checkCurMaxNum())
-      c[i][j], c[i+1][j] = c[i+1][j], c[i][j] # return
+def check_col(arr, col):
+    max_count = 1
+    count = 1
+    for i in range(1, N):
+        if arr[i][col] == arr[i-1][col]:
+            count += 1
+        else:
+            count = 1
+        max_count = max(max_count, count)
+    return max_count
 
-print(result)
+answer = 0
+
+for i in range(N):
+    for j in range(N):
+        # 오른쪽과 교환
+        if j + 1 < N:
+            candy[i][j], candy[i][j+1] = candy[i][j+1], candy[i][j]
+            # 교환된 행과 열만 검사
+            answer = max(answer, check_row(candy, i), check_col(candy, j), check_col(candy, j+1))
+            candy[i][j], candy[i][j+1] = candy[i][j+1], candy[i][j]
+
+        # 아래와 교환
+        if i + 1 < N:
+            candy[i][j], candy[i+1][j] = candy[i+1][j], candy[i][j]
+            # 교환된 행과 열만 검사
+            answer = max(answer, check_row(candy, i), check_row(candy, i+1), check_col(candy, j))
+            candy[i][j], candy[i+1][j] = candy[i+1][j], candy[i][j]
+
+print(answer)
