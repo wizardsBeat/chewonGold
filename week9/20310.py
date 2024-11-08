@@ -1,30 +1,24 @@
 import sys
+input = sys.stdin.readline
 
-s = list(sys.stdin.readline().rstrip())
+s = list(input().strip())
 
-n = s.count('0')
-m = s.count('1')
 
-# 앞에서부터 '1'을 m // 2 만큼 제거
-check = 0
-i = 0
-while check < m // 2 and i < len(s):
-    if s[i] == '1':
-        s.pop(i)
-        check += 1
-        # pop()으로 요소를 제거하면 리스트가 앞으로 당겨지므로 i를 증가시키지 않음
-    else:
-        i += 1  # '1'이 아닌 경우에만 다음 인덱스로 이동
+one = int(s.count('1') / 2)
+zero = int(s.count('0') / 2)
 
-# 뒤에서부터 '0'을 n // 2 만큼 제거
-check = 0
-i = len(s) - 1
-while check < n // 2 and i >= 0:
-    if s[i] == '0':
-        s.pop(i)
-        check += 1
-        # pop()으로 요소를 제거하면 리스트가 뒤로 당겨지므로 i를 감소시키지 않음
-    i -= 1  # '0'이 아닌 경우에도 인덱스를 감소하여 뒤에서부터 탐색
+#0은 뒤에서부터 삭제
+for i in range(zero):
+    for j in range(len(s)-1,-1,-1):
+        if s[j] == '0':
+            s.pop(j)
+            break
 
-# 최종 결과 출력
-print("".join(s))
+#1은 앞에서부터 삭제
+for i in range(one):
+    for j in range(len(s)):
+        if s[j] == '1':
+            s.pop(j)
+            break
+
+print(''.join(s))
