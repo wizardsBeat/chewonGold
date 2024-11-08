@@ -1,18 +1,24 @@
 import sys
+input = sys.stdin.readline
 
-S = list(sys.stdin.readline().strip())
+s = list(input().strip())
 
-zero = S.count('0') // 2
-one = S.count('1') // 2
 
-for i in range (one): # 앞에있는 1부터 삭제해야함
-  S.remove('1')
+one = int(s.count('1') / 2)
+zero = int(s.count('0') / 2)
 
-S.reverse()
+#0은 뒤에서부터 삭제
+for i in range(zero):
+    for j in range(len(s)-1,-1,-1):
+        if s[j] == '0':
+            s.pop(j)
+            break
 
-for j in range (zero): # 뒤에있는 0부터 삭제해야함
-  S.remove('0')
+#1은 앞에서부터 삭제
+for i in range(one):
+    for j in range(len(s)):
+        if s[j] == '1':
+            s.pop(j)
+            break
 
-S.reverse()
-
-print(''.join(S))
+print(''.join(s))
