@@ -1,17 +1,30 @@
-N, M = map(int, input().split())
+import sys
 
-A = list(map(int, input().split()))
+N, M = map(int, sys.stdin.readline().split())
+arr = list(map(int, sys.stdin.readline().split()))
+i = 0 # left pointer
+j = 0 # right pointer
+cnt = 0
+hap = arr[0] # i == 0, j == 0 일 때의 합
 
-answer = 0
-num = 0
-end = 0
-#포인터 시작점을 for 문으로 돌리는 i가 됨
-for i in range(N):
-    while num < M and end < N: #포인터 끝점이 end
-        num += A[end]
-        end+= 1
-    if num == M:
-        answer += 1
-    num -= A[i]
+while j < N:
+  if hap == M:
+    cnt += 1
+    i += 1
+    j += 1
+    if j == N:
+      break
+    hap -= arr[i-1]
+    hap += arr[j]
+  
+  elif hap < M: # 합을 늘려야하므로 j를 늘려야 함
+    j += 1
+    if j == N:
+      break
+    hap += arr[j]
+  
+  else: # 합을 줄여야하므로 i를 늘려야 함
+    i += 1
+    hap -= arr[i-1]
 
-print(answer)
+print(cnt)
