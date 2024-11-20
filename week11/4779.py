@@ -1,18 +1,12 @@
-import sys
-input = sys.stdin.readline
-def cut(a,n):
-    if n == 1:
-        return
-    for i in range(a + n//3, a +(n//3)*2):
-        result[i] = ' '
-    cut(a, n//3)
-    cut(a + n//3 * 2, n//3)
+def Cantor(N):
+  if N == 0:
+    return '-'
+  return Cantor(N-1) + ' '*(3**(N-1)) + Cantor(N-1)
 
 while True:
-    try :
-        N = int(input())
-        result = ['-']*(3**N)
-        cut(0,3**N)
-        print(''.join(result))
-    except :
-        break
+  try:
+    N = int(input())
+    answer = Cantor(N)
+    print(answer)
+  except EOFError:
+    break
