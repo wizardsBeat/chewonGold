@@ -1,15 +1,10 @@
-import sys
+N = int(input())
 
-N = int(sys.stdin.readline())
-Ps = list(map(int, sys.stdin.readline().split()))
+peoples = list(map(int, input().split()))
+peoples.sort()
 
-# 합의 최솟값이므로 최솟값부터 순서대로 더해져야함
+answer = [peoples[0]]
+for i in range(1,N):
+    answer.append(answer[i-1] + peoples[i])
 
-Ps.sort()
-hap = 0
-
-for i in range (len(Ps)):
-  hap += Ps[i] * N
-  N -= 1
-
-print(hap)
+print(sum(answer))
