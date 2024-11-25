@@ -1,13 +1,15 @@
-import sys
+n, k = map(int, input().split())
 
-N, K = map(int, sys.stdin.readline().split())
-temps = list(map(int, sys.stdin.readline().split()))
-hap = sum(temps[:K]) # 0부터 K개의 합
-mhap = hap
+numbers = list(map(int, input().split()))
 
-for i in range (0, N-K): # 0일 때는 위에서 이미 구했으므로
-  hap = hap - temps[i] + temps[i+K]
-  if hap > mhap:
-    mhap = hap
+sumnum = 0
+nj = [0]
+sumlist = []
+for i in range(n):
+    sumnum += numbers[i]
+    nj.append(sumnum)
 
-print(mhap)
+for i in range(n-k+1):
+    sumlist.append(nj[i+k] - nj[i])
+    
+print(max(sumlist))
