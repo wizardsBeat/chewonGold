@@ -1,18 +1,8 @@
 import sys
-from collections import deque
-input = sys.stdin.readline
 
-n = int(input().strip())
-arrlist  = [[] for _ in range(51)] 
-for _ in range(n):
-    tmp = input().strip()
-    arrlist[len(tmp)].append(tmp)
+n = int(sys.stdin.readline())
+words = [sys.stdin.readline().strip() for _ in range (n)]
+words = list(set(words)) # 중복 제거
+words.sort(key = lambda x:(len(x), x)) # 조건 1. x의 길이, 조건2. x
 
-answer = []
-for i in range(51):
-    if len(arrlist[i])>0:
-        arrlist[i] = sorted(list(set(arrlist[i])))
-        answer += arrlist[i]
-
-
-print('\n'.join(answer))
+for i in range (len(words)): print(words[i])
