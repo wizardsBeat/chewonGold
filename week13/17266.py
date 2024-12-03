@@ -1,19 +1,20 @@
-import sys
-import math
+n = int(input())
+m = int(input())
+lights = list(map(int, input().split()))
+last,heights = lights[0],lights[0]
 
-n = int(sys.stdin.readline())
-m = int(sys.stdin.readline())
-x_li = tuple(map(int, sys.stdin.readline().split()))
+for i in range(1,len(lights)):
+    tmp = abs(last-lights[i])
+    
+    if tmp % 2 == 0:
+        tmp = tmp//2
+    else:
+        tmp = (tmp//2) + 1  
 
-mlen = 0
-left = x_li[0] - 0
-right = n - x_li[-1]
+    heights = max(heights, tmp)
 
-side = max(left, right)
+    last = lights[i]
 
-for i in range (1, m):
-  mlen = max(mlen, x_li[i] - x_li[i-1])
+heights = max(heights, abs(n-lights[len(lights)-1]))
 
-ans = math.ceil(mlen/2)
-
-print(max(ans, side))
+print(heights)
