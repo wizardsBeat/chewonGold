@@ -1,25 +1,15 @@
 import sys
 
-input = sys.stdin.readline
+n, m = map(int, sys.stdin.readline().split())
+voca = {}
 
-n, m = map(int , input().split())
+for _ in range (n):
+  v = sys.stdin.readline().strip()
+  if len(v) >= m:
+    voca[v] = voca.get(v, 0) + 1 # 없으면 1, 있으면 해당하는 값에 1을 추가한 값 반환
 
-words = dict()
-lengwords = [[] for _ in range(11)]
-for i in range(n):
-    word = input().strip()
-    length = len(word)
-    if length < m:
-        continue
-    if word in words:
-        words[word]['count'] += 1
-    else:
-        words[word] = {'count':1, 'length':length}
+sv = sorted(voca.items(), key = lambda x: x[0]) # 사전순으로 정렬
+sv = sorted(sv, key = lambda x: (x[1], len(x[0])), reverse = True) # 사전에 나온 횟수가 많은 순, 동일하다면 길이가 긴 순으로 정렬
 
-sorted_data = [item[0] for item in sorted(
-    words.items(),
-    key=lambda item: (-item[1]['count'], -item[1]['length'], item[0])
-)]
-
-    
-print('\n'.join(sorted_data))
+for word, num in sv:
+  print(word)
