@@ -15,3 +15,4 @@ for _ in range (n):
   
   else:
     heapq.heappush(heap, x)
+    
