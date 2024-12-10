@@ -1,41 +1,48 @@
 import sys
 
-n = int(sys.stdin.readline().rstrip())
-matrix = [list(map(int, sys.stdin.readline().split())) for _ in range(n)]
-count = [0, 0, 0]
+n = int(sys.stdin.readline())
+arr = [(list(map(int, sys.stdin.readline().split()))) for _ in range (n)]
+minus = 0 # -1로 채워진 종이
+zero = 0 # 0으로 채워진 종이
+plus = 0 # 1로 채워진 종이
 
-def count_picture(matrix):
-    global count
-    size = len(matrix)
-    flag = 0
-    first = matrix[0][0]
-    for i in range(size):
-        for j in range(size):
-            if matrix[i][j] != first:
-                flag = 1
-                break
-    if flag == 1:
-        new_size = size // 3
-        for i in range(3):
-            row_start = i*new_size
-            row_end = row_start + new_size
-            for j in range(3):
-                column_start = j*new_size
-                column_end = column_start + new_size
-                new_matrix = []
-                for row in matrix[row_start:row_end]:
-                    new_row = row[column_start:column_end]
-                    new_matrix.append(new_row)
-
-                count_picture(new_matrix)
+def cut(x, y, n):
+  global minus, zero, plus
+  
+  if n == 1:
+    if arr[x][y] == -1:
+      minus += 1
+    elif arr[x][y] == 0:
+      zero += 1
     else:
-        if matrix[0][0] == -1:
-            count[0] += 1
-        elif matrix[0][0] == 0:
-            count[1] += 1
-        else:
-            count[2] += 1
-        return
+      plus += 1
+  
+  else:
+    tmp_arr = []
+    for i in range (x, x+n):
+      tmp_arr.extend(arr[i][y:y+n])
+
+    if len(set(tmp_arr)) != 1:
+      cut(x, y, n//3)
+      cut(x, y+n//3, n//3)
+      cut(x, y+2*n//3, n//3)
+      cut(x+n//3, y, n//3)
+      cut(x+n//3, y+n//3, n//3)
+      cut(x+n//3, y+2*n//3, n//3)
+      cut(x+2*n//3, y, n//3)
+      cut(x+2*n//3, y+n//3, n//3)
+      cut(x+2*n//3, y+2*n//3, n//3)
     
-count_picture(matrix)
-print('\n'.join(map(str, count)))
+    else:
+      if arr[x][y] == -1:
+        minus += 1
+      elif arr[x][y] == 0:
+        zero += 1
+      else:
+        plus += 1
+
+cut(0, 0, n)
+
+print(minus)
+print(zero)
+print(plus)
