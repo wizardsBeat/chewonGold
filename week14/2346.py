@@ -1,19 +1,27 @@
 import sys
-from collections import deque
 
-n = int(sys.stdin.readline())
-balloons = list(map(int, sys.stdin.readline().split()))
+input = sys.stdin.readline
 
-bs = deque((i + 1, num) for i, num in enumerate(balloons)) # 풍선 번호와 값을 덱에 저장
+n = int(input())
+
+arr = list(map(int, input().split()))
+indexlist = [ i for i in range(n+1)]
 result = []
 
-while bs:
-  index, value = bs.popleft() # 첫 번째 위치에 있는 풍선을 터트림
-  result.append(index)
+idx = 0
+k = arr.pop(idx)
+result.append(indexlist.pop(idx)+1)
 
-  if value > 0: # 풍선이 터지면서 이미 오른쪽으로 한 칸 이동된 상태이므로 한 칸 덜 움직여야 함
-    bs.rotate(-value+1)
-  else:
-    bs.rotate(-value)
 
-print(' '.join(map(str, result)))
+while(len(arr) > 0):
+        
+    if(k < 0):
+        idx = (idx+k) % len(arr)
+    else:
+        idx = (idx+(k-1))%len(arr)
+        
+    k = arr.pop(idx)
+    result.append(indexlist.pop(idx) + 1)
+        
+        
+print(' '.join(list(map(str, result))))
