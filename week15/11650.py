@@ -10,5 +10,6 @@ for i in range(N):
 
 numarr.sort()
 
+
 for i in numarr:
     print(i[0], i[1])
