@@ -1,26 +1,29 @@
 import sys
 from collections import deque
 
-input = sys.stdin.readline
+n = int(sys.stdin.readline())
+tree = [[] for _ in range (n+1)]
 
-n = int(input().strip())
-nodes = [[] for _ in range(n+1)]
-parents = [0 for _ in range(n+1)]
+# a와 b를 각각의 tree에 연결해줌
+for _ in range (n-1):
+  a, b = map(int, sys.stdin.readline().split())
+  tree[a].append(b)
+  tree[b].append(a)
 
-for _ in range(n-1):
-    a, b = map(int, input().split())
-    nodes[a].append(b)
-    nodes[b].append(a)
+# 부모 노드
+parent = [0] * (n+1)
 
-def bfs(start):
-    queue = deque([start])
-    while queue:
-        current = queue.popleft()
-        for neighbor in nodes[current]:
-            if parents[neighbor] == 0:
-                parents[neighbor] = current
-                queue.append(neighbor)
+# BFS
+def bfs():
+  deq = deque([1]) # 루트 노드는 1
+  while deq:
+    c = deq.popleft()
+    for t in tree[c]:
+      if parent[t] == 0: # 방문되지 않은 노드
+        parent[t] = c # 현재 노드를 부모로 설정
+        deq.append(t)
 
-bfs(1)
+bfs()
 
-print('\n'.join(map(str, parents[2:])))
+for i in range (2, n+1):
+  print(parent[i])
