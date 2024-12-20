@@ -1,9 +1,13 @@
 import sys
 
-n, m = map(int, sys.stdin.readline().split())
-mk = set([sys.stdin.readline().strip() for _ in range (n)]) # 메모장에 적은 키워드
+input = sys.stdin.readline
 
-for _ in range (m):
-  words = set(sys.stdin.readline().strip().split(','))
-  mk -= words
-  print(len(mk))
+n, m = map(int, input().split())
+
+keyword =  set(input().strip() for _ in range(n))
+
+for _ in range(m):
+    search = set(input().strip().split(','))
+    keyword -= search
+    print(len(keyword))
+
