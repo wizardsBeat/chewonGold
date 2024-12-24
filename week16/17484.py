@@ -10,16 +10,16 @@ for j in range (m):
 
 for i in range (1, n):
   for j in range (m):
-    for k in range (-1, 2): # 현재 이동 방향
-      for kp in range (-1, 2): # 이전 이동 방향
+    for k in range (3): # 현재 이동 방향
+      for kp in range (3): # 이전 이동 방향
         if k != kp: # 이전과 현재의 이동 방향이 다를 때
-          cp = j + kp
+          cp = j + (kp - 1)
           if 0 <= cp < m: # 이동한 위치가 범위 안일 때
             dp[i][j][k] = min(dp[i][j][k], dp[i-1][cp][kp] + cost[i][j])
 
 result = float('inf')
 for j in range (m):
-  for k in range (-1, 2):
+  for k in range (3):
     result = min(result, dp[n-1][j][k])
 
 print(result)
