@@ -1,16 +1,10 @@
 import sys
 
-input = sys.stdin.readline
+n = int(sys.stdin.readline())
+erank = [int(sys.stdin.readline()) for _ in range (n)]
 
-n = int(input().strip())
-numlist = []
+erank.sort()
+for i in range (n):
+  erank[i] = abs(erank[i] - (i+1))
 
-for _ in range(n):
-    numlist.append(int(input().strip()))
-
-numlist.sort()
-answer = 0
-for i in range(n):
-    if numlist[i] != i+1:
-        answer += abs((i+1) - numlist[i])
-print(answer)
+print(sum(erank))
