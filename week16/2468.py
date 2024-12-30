@@ -1,35 +1,39 @@
 import sys
 from collections import deque
 
-n = int(sys.stdin.readline())
-area = [list(map(int, sys.stdin.readline().split())) for _ in range (n)]
+input = sys.stdin.readline
 
-maxh = max(max(row) for row in area) # 높이 최댓값
+n = int(input().strip())
+rain = [list(map(int, input().split())) for _ in range(n)]
 
-directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+def BFS(x,y, h, visited):
+    dx = [-1, 1, 0,0]
+    dy = [0,0,-1,1]
+    queue = deque([(x,y)])
+    visited[x][y] = True
 
-def bfs(x, y, h):
-  nv = deque([(x, y)])
-  visited[x][y] = True
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
 
-  while nv:
-    cx, cy = nv.popleft() # 현재 x, y
-    for dx, dy in directions:
-      nx, ny = cx + dx, cy + dy
-      if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny] and area[nx][ny] > h: # 방문된 적 없고 물에 잠기지 않는 경우 (범위 내) 
-        nv.append((nx, ny))
-        visited[nx][ny] = True
+            if 0<= nx < n and 0<=ny < n and not visited[nx][ny] and rain[nx][ny] > h:
+                visited[nx][ny] = True
+                queue.append((nx, ny))
 
-ans = 0
-for h in range (maxh+1):
-  visited = [[False] * n for _ in range (n)]
-  cnt = 0
-  for i in range (n):
-    for j in range (n):
-      if area[i][j] > h and not visited[i][j]: # 방문된 적 없고 물에 잠기지 않는 경우
-        bfs(i, j, h)
-        cnt += 1
-  
-  ans = max(ans, cnt)
+maxcount = 0
+maxh = max(max(row) for row in rain)
 
-print(ans)
+for h in range(maxh + 1):
+    visited = [[False] * n for _ in range(n)]
+    count = 0
+    for i in range(n):
+        for j in range(n):
+            if rain[i][j] > h and not visited[i][j]:
+                BFS(i, j, h, visited)
+                count += 1
+    
+    maxcount = max(maxcount, count)
+
+print(maxcount)
