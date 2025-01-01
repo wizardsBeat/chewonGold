@@ -1,30 +1,18 @@
 import sys
 
-input = sys.stdin.readline
-
-n, s, p = map(int, input().split())
-
+n, ns, p = map(int, sys.stdin.readline().split())
 if n == 0:
-    print(1)
-
+  print(1)
 else:
-    rank = list(map(int, input().split()))
-
-    i = 0
-    while i < n and rank[i] > s:
-        i += 1
-    answer = i + 1
-
-
-    if answer > p:
-        print(-1)
-    else:
-        samescore = []
-        for x in range(len(rank)):
-            if rank[x] == s:
-                samescore.append(x)
-
-        if samescore and samescore[-1] + 1 >= p:
-            print(-1)
-        else:
-            print(answer)
+  rank = list(map(int, sys.stdin.readline().split()))
+  if n == p and rank[-1] >= ns: # n이 p보다 작으면 랭킹에 무조건 들 수 있으므로 n == p 조건 필요
+    print(-1)
+  
+  else:
+    r = n+1
+    for i in range (n):
+      if rank[i] <= ns:
+        r = i + 1
+        break
+    
+    print(r)
