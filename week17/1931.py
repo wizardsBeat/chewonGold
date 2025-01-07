@@ -1,22 +1,23 @@
 import sys
+
 input = sys.stdin.readline
 
-n = int(input())
+n = int(input().strip())
 meeting = []
-mcnt = 0
 
-for _ in range (n):
-  s, e = map(int, input().split())
-  meeting.append((s, e))
+for _ in range(n):
+    start, end = map(int, input().split())
+    meeting.append([start, end])
 
-meeting.sort(key = lambda x:(x[1], x[0])) # 종료 시간이 빠른 순서대로 (동일하다면 시작 시간이 빠른 순서대로)
 
-cnt = 0
-end_time = 0
+meeting.sort(key=lambda x: (x[1], x[0])) #끝나는 시간 기준으로 정렬, 끝나는 시간이 같다면 시작하는 시간이 빠른거 먼저 정렬해주기
 
-for s, e in meeting:
-  if s >= end_time: # 시작하는 시간이 이전 회의의 종료 시간보다 긴 경우
-    cnt += 1
-    end_time = e
+answer = 0
+tmp = 0
+for i in range(n):
+    if (tmp <= meeting[i][0]):
+        tmp = meeting[i][1]
+        answer += 1
 
-print(cnt)
+
+print(answer)
