@@ -1,15 +1,14 @@
-n = int(input().strip())
-numarr = list(map(int, input().split()))
+import sys
+input = sys.stdin.readline
 
-increase = []
+n = int(input())
+A = list(map(int, input().split()))
 
-for num in numarr:
-    if not increase or num > increase[-1]:
-        increase.append(num)
-    else:
-        for i in range(len(increase)):
-            if increase[i] >= num:
-                increase[i] = num
-                break
+dp = [1 for i in range (n)] # 자기 자신을 포함하므로 모든 부분 수열은 1 이상
 
-print(len(increase))
+for i in range (1, n):
+  for j in range (0, i):
+    if A[j] < A[i]: # A[i] 이전에 A[i]보다 작은 수가 있는 경우
+      dp[i] = max(dp[i], dp[j] + 1) # dp[j]에 A[i]를 추가한 수와 dp[i] 중 더 큰 것을 저장
+
+print(max(dp))
