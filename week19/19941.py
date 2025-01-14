@@ -2,21 +2,26 @@ import sys
 input = sys.stdin.readline
 
 n, k = map(int, input().split())
-hp = list(input().strip())
-hpb = [False for _ in range (n)]
 
-for i in range (n):
-  if hp[i] == 'P':
-    hpb[i] = 'P'
+table = list(input().strip())
+answer = 0
 
-cnt = 0
+def ham(num):
+    global answer
+    start = num - k
+    if start < 0 :
+        start = 0
+    end = num +k
+    if end >= len(table):
+        end = len(table) -1
+    for i in range(start, end+1):
+        if table[i] == 'H':
+            table[i] = ''
+            answer += 1
+            break
+    return
 
-for i in range (n):
-  if hp[i] == 'P':
-    for j in range (-k, k+1):
-      if 0 <= i+j < n and not hpb[i+j]:
-        hpb[i+j] = True
-        cnt += 1
-        break
-
-print(cnt)
+for i in range(len(table)):
+    if table[i] == 'P':
+        ham(i)
+print(answer)
