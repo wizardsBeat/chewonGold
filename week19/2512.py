@@ -14,7 +14,7 @@ def solution():
   r = budget[-1]
   ans = l
 
-  while l < r-1:
+  while l <= r:
     hap = 0
     m = (l+r)//2
     for i in range (n):
@@ -28,9 +28,9 @@ def solution():
       return m
     
     if hap > tb:
-      r = m
+      r = m-1
     else:
-      l = m
+      l = m+1
       ans = max(m, ans)
 
   return ans
