@@ -1,30 +1,30 @@
 import sys
-
 input = sys.stdin.readline
 
-# N = 지름길 수, D는 고속도로 길이
-N, D = map(int, input().split())
-lines = []
+n, d = map(int, input().split())
+sc = []
+dp = [i for i in range (d+1)]
 
-# 지름길 리스트
-for _ in range(N):
-    start, end, length = map(int, input().split())
-    if end <= D and length < end - start:  # 유효한 지름길만 추가
-        lines.append((start, end, length))
+for _ in range (n):
+  s, e, l = map(int, input().split())
+  if e > d: # 돌아올 수 없으므로 초과하면 안됨
+    continue
+  
+  elif e - s <= l: # 지름길이 더 오래 걸리면 굳이 사용할 필요 없음
+    continue
 
-# 거리 테이블 초기화
-dist = [i for i in range(D + 1)]
-
-# DP 방식으로 최단 거리 구하기
-for i in range(D + 1):
-    # 기본 도로로 한 칸 이동
-    if i > 0:
-        dist[i] = min(dist[i], dist[i - 1] + 1)
+  else:
+    sc.append((s, e, l))
     
-    # 지름길 적용
-    for start, end, length in lines:
-        if i == start and end <= D:
-            dist[end] = min(dist[end], dist[start] + length)
+sc.sort(key = lambda x:x[1], reverse = True)
+sc.sort(key = lambda x:(x[0], x[2]))
 
-# 결과 출력
-print(dist[D])
+for i in range (len(sc)):
+  for j in range (d+1):
+    if sc[i][0] == j:
+      end = sc[i][1]
+      dp[end] = min(dp[j] + sc[i][2], dp[end])
+    else:
+      dp[j] = min(dp[j], dp[j-1] + 1)
+
+print(dp[-1])
