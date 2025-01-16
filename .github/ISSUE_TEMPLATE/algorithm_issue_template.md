@@ -1,3 +1,11 @@
+---
+name: "Algorithm Issue"
+about: "Template for solving algorithm problems"
+title: "[번호] 00.00 이름"
+labels: ''
+assignees: ''
+---
+
 <!-- 이슈 이름은 '[번호] 00.00 이름' 으로 통일해주세요. 이슈와 마찬가지로 라벨로 담당자를 표시해 주세요. 
 ex. [1874] 09.04 송윤주 -->
 
