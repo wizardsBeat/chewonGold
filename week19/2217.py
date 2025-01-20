@@ -1,15 +1,15 @@
-import sys
-input = sys.stdin.readline
-
+# 로프의 개수
 n = int(input())
-weight = [int(input()) for _ in range (n)]
 
-weight.sort(reverse = True) # 큰 무게부터 정렬
-mw = 0 # 최대로 버틸 수 있는 중량
+# 중량 한계
+ropes = [int(input()) for _ in range(n)]
 
-for i in range (n):
-  k = i+1 # 로프의 개수
-  w = k * weight[i] # 하나의 로프가 버틸 수 있는 최소 중량 * k == k개의 로프가 버틸 수 있는 최대 중량
-  mw = max(w, mw)
+# 내림차순 정렬
+ropes.sort(reverse=True)
 
-print(mw)
+# 각 로프를 사용할 때의 최대 중량 계산
+max_weight = 0
+for i in range(n):
+    max_weight = max(max_weight, ropes[i] * (i + 1))
+
+print(max_weight)
