@@ -1,18 +1,16 @@
 import sys
-
 input = sys.stdin.readline
 
-t = int(input().strip())
-arr = []
-for _ in range(t):
-    arr.append(int(input().strip()))
+t = int(input())
 
-dp = [1] * (max(arr) + 1)
+dp = [1] * 10001
 
-for j in range(2, 4):
-    for i in range(1, len(dp)):
-        if i>= j:
-            dp[i] = dp[i] + dp[i-j]
+for i in range (2, 10001):
+  dp[i] += dp[i-2]
 
-for i in arr:
-    print(dp[i])
+for i in range (3, 10001):
+  dp[i] += dp[i-3]
+
+for _ in range (t):
+  n = int(input())
+  print(dp[n])
