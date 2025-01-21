@@ -1,36 +1,38 @@
 import sys
 from collections import deque
+
 input = sys.stdin.readline
+answer = []
 
-def bfs(s):
-  nv = deque([s])
-  directions = [(1, 1), (1, 0), (1, -1), (0, 1), (0, -1), (-1, 1), (-1, 0), (-1, -1)] # 대각선 포함 8방향
+def BFS(x, y):
+    dx = [-1, 1, 0, 0, -1, -1, 1, 1]
+    dy = [0, 0, -1, 1, -1, 1, -1, 1]
+    queue = deque([(x, y)])
+    island[x][y] = 0
+    while queue:
+        x, y = queue.popleft()
+        for i in range(8):
+            nx = x + dx[i]
+            ny = y + dy[i]
 
-  while nv:
-    x, y = nv.popleft()
-    for dx, dy in directions:
-      nx, ny = x + dx, y + dy
-      if 0 <= nx < w and 0 <= ny < h and not visited[ny][nx] and m[ny][nx] == 1: # 범위 내, 방문된 적 없는 땅
-        nv.append((nx, ny))
-        visited[ny][nx] = True
+            if 0 <= nx < h and 0 <= ny < w and island[nx][ny] == 1:
+                queue.append((nx, ny))
+                island[nx][ny] = 0
 
-w, h = map(int, input().split())
+while True:
+    w, h = map(int, input().strip().split())
+    if w == 0 and h == 0:
+        break
+    island = []
+    for _ in range(h):
+        island.append(list(map(int, input().split())))
 
-while w != 0 and h != 0:
-  m = [] # 지도
-  for _ in range (h):
-    arr = list(map(int, input().split()))
-    m.append(arr)
-  
-  visited = [[False] * w for _ in range (h)]
-  cnt = 0 # 땅의 개수
+    num = 0
+    for i in range(h):
+        for j in range(w):
+            if island[i][j] == 1:
+                BFS(i, j)
+                num += 1
+    answer.append(num)
 
-  for i in range (w):
-    for j in range (h):
-      if m[j][i] == 1 and not visited[j][i]:
-        s = (i, j)
-        bfs(s)
-        cnt += 1
-  
-  print(cnt)
-  w, h = map(int, input().split())
+print('\n'.join(map(str, answer)))
