@@ -25,9 +25,9 @@ for _ in range (t):
     for c in tc:
       ti = result[c] # target index
       for i in range (len(ti) - k + 1):
-        nsw = ti[k+i -1] - ti[i] + 1 # next sliding window (문자열의 길이이므로 1을 더해줘야함)
-        ms = min(ms, nsw)
-        mb = max(mb, nsw)
+        sw = ti[k+i -1] - ti[i] + 1 # sliding window (문자열의 길이이므로 1을 더해줘야함)
+        ms = min(ms, sw)
+        mb = max(mb, sw)
 
     print(ms, mb)
   
