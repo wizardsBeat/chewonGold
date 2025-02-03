@@ -1,21 +1,17 @@
 import sys
+
 input = sys.stdin.readline
 
-t = []
-p = []
+N = int(input().strip())
+schedule = []
+for i in range(N):
+    schedule.append(list(map(int, input().split())))
 
-n = int(input())
-for _ in range (n):
-  time, pay = map(int, input().split())
-  t.append(time)
-  p.append(pay)
+dp = [0 for i in range(N+1)]
 
-tp = [0 for _ in range (n+1)]
+for i in range(N):
+    for j in range(i + schedule[i][0], N+1):
+        if dp[j] < dp[i] + schedule[i][1]:
+            dp[j] = dp[i] + schedule[i][1]
 
-for i in range (n):
-  if i + t[i] <= n:
-    tp[i + t[i]] = max(tp[i + t[i]], tp[i] + p[i])
-    for j in range (i+t[i], n+1):
-      tp[j] = max(tp[j], tp[i+t[i]])
-
-print(max(tp))
+print(max(dp))
