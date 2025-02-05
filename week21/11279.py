@@ -2,12 +2,17 @@ import sys
 import heapq
 input = sys.stdin.readline
 
-n = int(input())
-h = []
-for _ in range (n):
-  x = int(input())
+n = int(input().strip())
+numbers = []
+answer = []
+for _ in range(n):
+    num = int(input().strip())
+    if num == 0:
+        if len(numbers) != 0:
+            answer.append(-(heapq.heappop(numbers)))
+        else:
+            answer.append(0)
+    else:
+        heapq.heappush(numbers, -num) #maxheap으로 만들어 주기 위해 앞에 부호 바꿔서 heappush해줬음
 
-  if x == 0:
-    print(-heapq.heappop(h)) if h else print(0)
-  else:
-    heapq.heappush(h, -x) # 가장 작은 수부터 출력하므로 부호를 반대로 해야 최대값부터 출력 가능
+print('\n'.join(list(map(str, answer))))
