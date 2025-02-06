@@ -1,21 +1,18 @@
 import sys
-
 input = sys.stdin.readline
 
-T = int(input().strip())
+T = int(input())
 
 for _ in range(T):
-    N = int(input().strip())
-    score = [0] * (N + 1)
-    for i in range(N):
-        d, i = map(int, input().split())
-        score[d] = i
+    N = int(input())
+    rank = [list(map(int, input().split())) for _ in range(N)]
+    rank_asc = sorted(rank)
+    top = 0
+    result = 1
     
-    answer = 1
-    scoremax = score[1]
-    for i in range(2, N+1):
-        if score[i] < scoremax:
-            scoremax = score[i]
-            answer += 1
-
-    print(answer)
+    for i in range(1, len(rank_asc)):
+        if rank_asc[i][1] < rank_asc[top][1]:
+            top = i
+            result += 1
+    
+    print(result)
