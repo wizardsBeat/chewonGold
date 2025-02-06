@@ -16,5 +16,4 @@ for i in range(1, n):
         else:
             dp[i][j] = max(dp[i-1][j-1], dp[i-1][j]) + numarr[i][j]  # 왼쪽, 오른쪽 비교해서 큰 값을 가져옴
 
-print(dp)
-print(max(max(dp)))
+print(max(dp[-1]))
