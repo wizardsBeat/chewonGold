@@ -17,5 +17,5 @@ for i in range(n-1):
     
     else:
         ans += (prices[i] * cities[i])
-        
+
 print(ans)

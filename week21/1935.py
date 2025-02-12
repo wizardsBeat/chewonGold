@@ -33,6 +33,6 @@ for c in calc:
         n1 = stack.pop()
         result = calculator(n1, n2, c)
         stack.append(result)
-        
+
 # 최종 결과 출력
 print(f"{stack[-1]:.2f}")
