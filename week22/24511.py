@@ -1,22 +1,22 @@
 import sys
+from collections import deque
+
 input = sys.stdin.readline
 
-n = int(input())
+n = int(input().strip())
 a = list(map(int, input().split()))
 b = list(map(int, input().split()))
-m = int(input())
+m = int(input().strip())
 c = list(map(int, input().split()))
+zero = deque()
+for i in range(n):
+    if a[i] == 0:
+        zero.append(b[i])
 
-qn = a.count(0) # 큐의 개수
-ans = []
-
-if m > qn:
-  for i in range (n-1, -1, -1):
-    if a[i] == 0: ans.append(b[i])
-  ans.extend(c[:m-qn])
-else:
-  for i in range (n-1, -1, -1):
-    if a[i] == 0: ans.append(b[i])
-    if len(ans) == m: break
-
-print(*ans)
+for number in c:
+    if zero:
+        tmp = zero.pop()
+        zero.appendleft(number)
+        print(tmp, end=' ')
+    else:
+        print(number , end=' ')
