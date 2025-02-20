@@ -1,59 +1,23 @@
 import sys
-input = sys.stdin.readline
+sys.setrecursionlimit(100000)
 
-target = list(input().strip())
-origin = list(input().strip())
+s = input().strip()
+t = input().strip()
+answer = 0
 
-# 만약 t[0] == 'B' 이고 t[1] == 'A': 분기점이 생김
-n = len(origin)-1
+def recurse(T):
+    global answer
+    if T == s:
+        answer = 1
+        return
+    if len(T) <= len(s):
+        return
 
-def check (s, e):
-  if s < e: # 뒤집히지 않은 상태
-    if origin[s:e+1] == target:
-      return 1
-    if e - s < len(target):
-      return 0
-    
-    if origin[s] == 'B' and origin[e] == 'A':
-      if check (e, s+1):
-        return 1
-      else:
-        return check (s, e-1)
-    
-    elif origin[s] == 'B':
-      return check (e, s+1)
-    
-    elif origin[e] == 'A':
-      return check (s, e-1)
-    
-    else:
-      if origin[s:e+1] == target:
-        return 1
-      else:
-        return 0
-    
-  else:
-    if origin[e:s+1][::-1] == target:
-      return 1
-    if s - e < len(target):
-      return 0
-    
-    if origin[s] == 'B' and origin[e] == 'A':
-      if check (e, s-1):
-        return 1
-      else:
-        return check (s, e+1)
-    
-    elif origin[s] == 'B':
-      return check (e, s-1)
-    
-    elif origin[e] == 'A':
-      return check (s, e+1)
-    
-    else:
-      if origin[e:s+1][::-1] == target:
-        return 1
-      else:
-        return 0
+    if T[-1] == 'A':  
+        recurse(T[:-1])
 
-print(check(0, n))
+    if T[0] == 'B':  
+        recurse(T[::-1][:-1])
+
+recurse(t)
+print(answer)
