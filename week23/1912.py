@@ -3,15 +3,9 @@ input = sys.stdin.readline
 
 n = int(input())
 arr = list(map(int, input().split()))
-dp = []
-hap = 0
-for i in range (n):
-  if arr[i] >= 0:
-    hap += arr[i]
-  else:
-    if hap != 0:
-      dp.append(hap)
-      hap = 0
-    dp.append(arr[i])
+dp = [arr[i] for i in range (n)]
 
-print(dp)
+for i in range (1, n):
+  dp[i] = max(dp[i-1]+arr[i], dp[i])
+
+print(max(dp))
