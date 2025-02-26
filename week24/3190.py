@@ -1,49 +1,43 @@
+import sys
 from collections import deque
+input = sys.stdin.readline
 
-N = int(input())
-K = int(input())
-board = [[0] * N for _ in range(N)] 
+n = int(input()) # 보드의 크기
+k = int(input()) # 사과의 개수
+apple = set([tuple(map(int, input().split())) for _ in range (k)]) # 사과의 위치
+l = int(input()) # 뱀의 방향 변환 횟수
+red = {int(x): c for x, c in (input().split() for _ in range(l))} # 방향 변환 정보
 
-for _ in range(K):
-    x, y = map(int, input().split())
-    board[x-1][y-1] = 1 
 
-L = int(input())
-directions = []
-for _ in range(L):
-    X, C = input().split()
-    directions.append((int(X), C)) 
+def Dummy():
+  board = [[False]*(n+1) for _ in range (n+1)]
+  snake = deque([(1, 1)])
+  directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+  direction = 0
+  cnt = 0 # 시간
+  i = 0 # 방향 변환 확인
 
-# 우, 하, 좌, 상
-dx = [0, 1, 0, -1]
-dy = [1, 0, -1, 0]
+  while True:
+    cnt += 1
+    x, y = snake[-1]
+    dx, dy = directions[direction]
+    nx, ny = x+dx, y+dy
+    if 1 <= nx <= n and 1 <= ny <= n and not board[nx][ny]:
+      board[nx][ny] = True # 이동한 위치
+      snake.append((nx, ny))
+      if (nx, ny) not in apple: # 사과를 먹지 못하면 꼬리 이동
+        lx, ly = snake.popleft()
+        board[lx][ly] = False
+      else: # 사과를 먹었다면 제거 
+        apple.remove((nx, ny))
 
-snake = deque([(0, 0)]) 
-direction = 0 
-time = 0 
-idx = 0 
-
-while True:
-    time += 1
-    head_x, head_y = snake[-1] 
-    nx = head_x + dx[direction]
-    ny = head_y + dy[direction] 
-    
-    if not (0 <= nx < N and 0 <= ny < N) or (nx, ny) in snake:
-        break
-
-    if board[nx][ny] == 1:
-        board[nx][ny] = 0
-        snake.append((nx, ny))
     else:
-        snake.append((nx, ny))
-        snake.popleft()
+      return cnt
 
-    if idx < L and time == directions[idx][0]:
-        if directions[idx][1] == 'L':
-            direction = (direction - 1) % 4
-        else:
-            direction = (direction + 1) % 4
-        idx += 1
+    if cnt in red:
+      if red[cnt] == 'L': # 반시계 방향 회전
+        direction = (direction - 1) % 4
+      else: # 시계 방향 회전
+        direction = (direction + 1) % 4
 
-print(time)
+print(Dummy())
