@@ -7,7 +7,7 @@ c = [tuple(map(int, input().split())) for _ in range (n)] # 수업
 
 c.sort(key = lambda x:(x[0], x[1])) # 시작 시간 빠른 순으로 정렬 (같으면 끝나는 시간 빠른 순)
 
-cr = [] # 강의실에 끝나는 시간을 저장장
+cr = [] # 강의실에 끝나는 시간을 저장
 heapq.heappush(cr, c[0][1])
 
 for i in range (1, n):
