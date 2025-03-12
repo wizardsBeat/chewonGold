@@ -2,36 +2,40 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-n = int(input())
+problems = []
 
-directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
-pn = 1 # problem number
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
-while n != 0:
-  cave = [list(map(int, input().split())) for _ in range (n)] # 도둑루피의 크기
-  dp = [[0]*n for _ in range (n)]
-  visited = [[False]*n for _ in range (n)] # 방문 리스트
-  
-  nv = deque([(0, 0)])
-  dp[0][0] = cave[0][0]
-
-  while nv:
-    x, y = nv.popleft()
-    visited[x][y] = True
+def bfs(cave, n):
+    number = [[float('inf')] * n for _ in range(n)]
+    queue = deque()
+    queue.append((0, 0))
+    number[0][0] = cave[0][0]
     
-    for dx, dy in directions:
-      nx, ny = x+dx, y+dy
+    while queue:
+        x, y = queue.popleft()
+        coin = number[x][y]
+        
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            
+            if 0 <= nx < n and 0 <= ny < n:
+                tmp = coin + cave[nx][ny]
+                
+                if tmp < number[nx][ny]:
+                    number[nx][ny] = tmp
+                    queue.append((nx, ny))
+    
+    problems.append(number[-1][-1])
+    
+while True:
+    n = int(input().strip())
+    if n == 0:
+        break
+    cave = [list(map(int, input().split())) for _ in range(n)]
+    bfs(cave, n)
 
-      if 0 <= nx < n and 0 <= ny < n:
-        if visited[nx][ny]: # 이미 값이 존재
-          if dp[nx][ny] > dp[x][y] + cave[nx][ny]:
-            nv.append((nx, ny)) # 최소값이 갱신되었다면 다시 탐색해야 함
-            dp[nx][ny] = dp[x][y] + cave[nx][ny]
-        else:
-          dp[nx][ny] = dp[x][y] + cave[nx][ny]
-          nv.append((nx, ny))
-          visited[nx][ny] = True
-
-  print('Problem %d: %d'%(pn, dp[n-1][n-1]))
-  n = int(input())
-  pn += 1
+for i in range(len(problems)):
+    print("Problem " + str(i + 1) + ": " + str(problems[i]))
