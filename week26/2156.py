@@ -1,23 +1,29 @@
+# 03.16 PM 9시 테스트 케이스는 풀었지만 반례에 오류가 생김
+# 03.16 PM 11시 강의를 찾아보니 다이나믹 프로그래밍을 사용하라고 함
+# 03.16 PM 11:40 max 오류 해결
 import sys
+# 연속 3잔 불가능, 최대 섭취량
+def wine_select(n, wines):
+    dp = [0 for _ in range(10001)]
+    dp[1] = wines[1]
+    dp[2] = wines[1] + wines[2]
+    dp[3] = max(wines[1] + wines[3], max(wines[2]+wines[3], dp[2]))
+    for i in range(4, n+1):
+        dp[i] = max(wines[i]+wines[i-1]+dp[i-3],max(wines[i]+dp[i-2],dp[i-1]))
+    return dp[n]
+    
+
+
+# 포두주 잔의 개수
 input = sys.stdin.readline
-
 n = int(input())
-wine = [int(input()) for _ in range (n)]
-dp = [0]*n
 
-dp[0] = wine[0]
+# 포도주 리스트
+wines = [0 for _ in range(10001)]
+for i in range(1,n+1):
+    wines[i] = int(input())
 
-# 1. 전전 포도주는 마시지 않고 전 포도주와 이번 포도주를 마심 (dp[i-3] + wine[i-1] + wine[i])
-# 2. 전전 포도주와 이번 포도주를 마시고 전 포도주를 마시지 않음 (dp[i-2] + wine[i])
-# 3. 현재 포도주를 마시지 않음 (dp[i-1])
+# 포도주 최대 섭취량
+print(wine_select(n, wines))
 
-if n > 1:
-  dp[1] = wine[0] + wine[1]
 
-if n > 2:
-  dp[2] = max(wine[2] + wine[1], wine[2] + wine[0], dp[1])
-
-for i in range (3, n):
-  dp[i] = max(dp[i-1], dp[i-3] + wine[i-1] + wine[i], dp[i-2] + wine[i])
-
-print(dp[n-1])
