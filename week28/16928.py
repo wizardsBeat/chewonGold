@@ -1,8 +1,6 @@
-import sys
+from collections import deque
 
-input = sys.stdin.readline
-
-# N = 사다리 수, M = 뱀 수
+# 입력
 N, M = map(int, input().split())
 
 # 1부터 100까지의 번호 초기화
@@ -18,20 +16,32 @@ for _ in range(M):
     M_input, M_output = map(int, input().split())
     num[M_input] = M_output
 
-# 게임 시작 위치
-state = 1
+# BFS를 위한 큐
+queue = deque([1])  # 시작은 1번 칸
+visited = [False] * 101
+visited[1] = True
 step = 0
 
-# 게임 진행
-while state < 100:
-    # 주사위 값 1부터 6까지 각각 계산
-    max_position = 0
-    for dice in range(1, 7):
-        if state + dice <= 100:  # 100을 넘지 않도록
-            max_position = max(max_position, num[state + dice])
+# BFS 시작
+while queue:
+    size = len(queue)
+    for _ in range(size):
+        state = queue.popleft()
 
-    # 가장 좋은 위치로 이동
-    state = max_position
+        # 1부터 6까지 주사위 값을 던져보며 진행
+        for dice in range(1, 7):
+            next_state = state + dice
+            if next_state <= 100:
+                next_state = num[next_state]  # 사다리나 뱀을 타고 이동
+
+                if next_state == 100:  # 100에 도달하면 끝
+                    print(step + 1)
+                    exit()
+
+                if not visited[next_state]:
+                    visited[next_state] = True
+                    queue.append(next_state)
+
     step += 1
 
 # 결과 출력
