@@ -1,69 +1,36 @@
-import sys
-input = sys.stdin.readline
+def find_bingo(str):
+    # 가로
+    for i in range(0, 9, 3):
+        if input_str[i] == str and input_str[i] == input_str[i + 1] == input_str[i + 2]:
+            return True
 
-def determine(board):
-  Xs = board.count('X')
-  Os = board.count('O')
-  rest = 9 - Xs - Os
+    # 세로
+    for i in range(3):
+        if str == input_str[i] and input_str[i] == input_str[i + 3] == input_str[i + 6]:
+            return True
 
-  # need at least 3 Xs or Os to make bingo (need bingo to be finished if the board is not full)
-  if Xs < 3 and Os < 3:
-    return 'invalid'
+    # 대각선
+    if str == input_str[0] and input_str[0] == input_str[4] == input_str[8]:
+        return True
 
-  # X starts first and O comes next
-  if Xs - Os not in (0, 1):
-    return 'invalid'
-  
-  xf, of = bingo(board)
-  if xf and of: # only one of x or o can be bingo
-    return 'invalid'
-  
-  # board should be full if there is no bingo
-  if not xf and not of and board.count('.') != 0:
-    return 'invalid'
-  
-  # if one is finished, another can't be added
-  if xf and Os != Xs - 1:
-    return 'invalid'
-  
-  if of and Xs != Os:
-    return 'invalid'
+    if str == input_str[2] and input_str[2] == input_str[4] == input_str[6]:
+        return True
 
-  return 'valid'
+    return False
 
-def bingo(board):
-  xf = False # flag for x
-  of = False # flag for o
-  # diagonal
-  if board[0] == board[4] == board[8] or board[2] == board[4] == board[6]:
-    if board[4] == 'X':
-      xf = True
-    elif board[4] == 'O':
-      of = True
-  
-  # horizontal
-  for i in range (0, 9, 3):
-    if board[i] == board[i+1] == board[i+2]:
-      if board[i+1] == 'X':
-        xf = True
-      elif board[i+1] == 'O':
-        of = True
-  
-  # vertical
-  for i in range (3):
-    if board[i] == board[i+3] == board[i+6]:
-      if board[i+3] == 'X':
-        xf = True
-      elif board[i+3] == 'O':
-        of = True
-  
-  return xf, of
-  
-
-board = input().strip()
-
-while board != 'end':
-  board = list(board)
-  print(determine(board))
-
-  board = input().strip()
+while True:
+    input_str = str(input().rstrip())
+    if input_str == 'end':
+        break
+    bingo_o, bingo_x = find_bingo('O'), find_bingo('X')
+    num_o, num_x = input_str.count('O'), input_str.count('X')
+    if bingo_x and not bingo_o and num_x == num_o + 1:
+        print("valid")
+        continue
+    if bingo_o and not bingo_x and num_o == num_x:
+        print("valid")
+        continue
+    if not bingo_o and not bingo_x and num_x == 5 and num_o == 4:
+        print("valid")
+        continue
+    print("invalid")
