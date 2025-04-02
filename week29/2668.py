@@ -1,29 +1,27 @@
 import sys
-input = sys.stdin.readline
+sys.setrecursionlimit(10000)
 
-n = int(input())
-arr = {}
-for i in range (1, n+1):
-  arr[i] = int(input())
-result = []
+def dfs(start, current, visited, path, graph, result):
+    if visited[current]:
+        if current in path:  # 사이클 형성 확인
+            result.update(path[path.index(current):])
+        return
+    
+    visited[current] = True
+    path.append(current)
+    dfs(start, graph[current], visited, path, graph, result)
+    path.pop()
 
-def dfs(s, c, visited, path):
-  if visited[c]: # if c is already visited
-    if c == s: # if it came back to starting point, than it's cycle
-      return path # return path
-    else:
-      return [] # return empty array if it's not cycle
-  
-  visited[c] = True
-  path.append(c) # append current to path
-  return dfs(s, arr[c], visited, path)
+n = int(sys.stdin.readline().strip())
+graph = {i: int(sys.stdin.readline().strip()) for i in range(1, n + 1)}
 
-for i in range (1, n+1):
-  visited = [False] * (n+1)
-  cycle = dfs(i, i, visited, [])
-  result.extend(cycle)
+result = set()
 
-result = list(set(result)) # remove duplicates
+for i in range(1, n + 1):
+    if i not in result:
+        visited = {j: False for j in range(1, n + 1)}
+        dfs(i, i, visited, [], graph, result)
+
 print(len(result))
 for num in sorted(result):
-  print(num)
+    print(num)
